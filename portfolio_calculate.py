@@ -11,6 +11,7 @@ def get_ticker_symbols():
     position_matrix = []
     average_prices = []
     use_avg_price = input("Do you want to enter average prices for the tickers? (yes/no): ").strip().lower() == 'yes'
+    timeperiod = int(input("Enter graph time period in seconds: ").strip())
 
     i = 0
     while True:
@@ -33,7 +34,7 @@ def get_ticker_symbols():
                 print("Invalid input. Please enter valid numbers for shares and average price.")
                 st.write("Invalid input. Please enter valid numbers for shares and average price.")
 
-    return ticker_symbols, position_matrix, average_prices, use_avg_price
+    return ticker_symbols, position_matrix, average_prices, use_avg_price, timeperiod
 
 
 def initialize_portfolio(ticker_symbols, position_matrix, average_prices, use_avg_price):
@@ -116,7 +117,7 @@ def display_streamlit_updates(portfolio, percent, current_session_raw_pl, curren
 
 
 def main():
-    ticker_symbols, position_matrix, average_prices, use_avg_price = get_ticker_symbols()
+    ticker_symbols, position_matrix, average_prices, use_avg_price, timeperiod = get_ticker_symbols()
 
     initial_value = initialize_portfolio(ticker_symbols, position_matrix, average_prices, use_avg_price)
     session_start_value = update_portfolio(ticker_symbols, position_matrix, average_prices, use_avg_price)[0]
@@ -162,7 +163,7 @@ def main():
                       y="value(SGD)")
         elements['plot_display'].plotly_chart(fig, use_container_width=True)
 
-        time.sleep(interval)
+        time.sleep(timeperiod)
 
 
 if __name__ == "__main__":
