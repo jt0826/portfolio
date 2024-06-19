@@ -172,7 +172,7 @@ def main():
 
         timedata.append(datetime.now().strftime("%H:%M:%S"))
         valuedata.append(portfolio)
-        if len(timedata) > 600:
+        if len(timedata) > timeperiod:
             timedata.pop(0)
             valuedata.pop(0)
 
@@ -180,7 +180,7 @@ def main():
                       y="value(SGD)")
         elements['plot_display'].plotly_chart(fig, use_container_width=True)
 
-        time.sleep(timeperiod)
+        time.sleep(1)
 
 
 if __name__ == "__main__":
