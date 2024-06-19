@@ -4,6 +4,20 @@ import plotly.express as px
 import pandas as pd
 from datetime import datetime
 from pulldata import PullData, InvalidTickerException
+import subprocess
+
+
+class NoInternetException(Exception):
+    """Exception raised for no internet."""
+    pass
+
+
+def check_internet_connection():
+    try:
+        subprocess.check_output(["ping", "-c", "1", "8.8.8.8"])
+        return True
+    except subprocess.CalledProcessError:
+        return False
 
 
 def get_ticker_symbols():
@@ -117,6 +131,9 @@ def display_streamlit_updates(portfolio, percent, current_session_raw_pl, curren
 
 
 def main():
+    if not check_internet_connection():
+        raise NoInternetException("Check internet connection")
+
     ticker_symbols, position_matrix, average_prices, use_avg_price, timeperiod = get_ticker_symbols()
 
     initial_value = initialize_portfolio(ticker_symbols, position_matrix, average_prices, use_avg_price)
